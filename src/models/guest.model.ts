@@ -62,7 +62,7 @@ const guestSchema = new Schema<
 guestSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'bookings',
-    select: '-__v',
+    select: '-guests -__v',
   });
   next();
 });

@@ -79,7 +79,7 @@ bookingSchema.virtual('stayDuration').get(function () {
 });
 
 bookingSchema.virtual('numberOfGuests').get(function () {
-  return this.guests.length;
+  return this.guests ? this.guests.length : undefined;
 });
 
 const Booking = model('Booking', bookingSchema);
