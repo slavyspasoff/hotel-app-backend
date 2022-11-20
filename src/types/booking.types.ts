@@ -1,10 +1,9 @@
 import { type Types, type Model } from 'mongoose';
 
-interface BookingInterface {
+interface BookingDocument {
   arrivalDate: Date;
   departureDate: Date;
   guests: Types.ObjectId[];
-  maxGuests: number;
   roomNumber: Types.ObjectId;
   isBreakfastIncl: boolean;
   stayDuration: number;
@@ -19,14 +18,14 @@ interface BookingVirtuals {
 interface BookingQueryHelpers {}
 
 type BookingModel = Model<
-  BookingInterface,
+  BookingDocument,
   BookingQueryHelpers,
   BookingMethods,
   BookingVirtuals
 >;
 
 export {
-  type BookingInterface,
+  type BookingDocument,
   type BookingModel,
   type BookingMethods,
   type BookingQueryHelpers,

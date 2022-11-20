@@ -33,6 +33,7 @@ const guestSchema = new Schema<
       required: [true, 'Guest must have a password.'],
       minlength: [8, 'Password must be between 8 and 50 characters long.'],
       maxlength: [50, 'Password must be between 8 and 50 characters long.'],
+      select: false,
     },
     confirmationPassword: {
       type: String,
@@ -43,6 +44,7 @@ const guestSchema = new Schema<
         },
         message: 'Password and confirmation password are not the same.',
       },
+      select: false,
     },
     bookings: [
       {
