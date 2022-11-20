@@ -44,7 +44,7 @@ bookingSchema.virtual('stayDuration').get(function () {
     this.departureDate.getTime() - this.arrivalDate.getTime();
   const millisecondsInADay = 24 * 60 * 60 * 1000;
   const differenceInDays = timestampDifference / millisecondsInADay;
-  return differenceInDays;
+  return Math.ceil(differenceInDays);
 });
 
 const Booking = model('Booking', bookingSchema);
