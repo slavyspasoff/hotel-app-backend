@@ -5,7 +5,7 @@ interface GuestDocument {
   email: string;
   password: string;
   confirmationPassword: string;
-  booking: Types.ObjectId[];
+  bookings: Types.ObjectId[];
 }
 
 interface GuestMethods {}

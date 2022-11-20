@@ -1,4 +1,3 @@
-import catchAsync from '../utility/catchAsync';
 import {
   getAllHandler,
   getOneHandler,

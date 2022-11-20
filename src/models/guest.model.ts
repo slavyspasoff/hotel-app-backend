@@ -28,7 +28,7 @@ const guestSchema = new Schema<
     confirmationPassword: {
       type: String,
     },
-    booking: [
+    bookings: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Booking',
@@ -40,6 +40,14 @@ const guestSchema = new Schema<
     toObject: { virtuals: true },
   }
 );
+
+guestSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'bookings',
+    select: '-__v',
+  });
+  next();
+});
 
 const Guest = model('Guest', guestSchema);
 
