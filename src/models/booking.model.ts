@@ -4,12 +4,16 @@ import {
   type BookingInterface,
   type BookingModel,
   type BookingMethods,
-} from './booking.types';
+  type BookingQueryHelpers,
+  type BookingVirtuals,
+} from '../types/booking.types';
 
 const bookingSchema = new Schema<
   BookingInterface,
   BookingModel,
-  BookingMethods
+  BookingMethods,
+  BookingQueryHelpers,
+  BookingVirtuals
 >(
   {
     arrivalDate: Date,
@@ -38,11 +42,8 @@ const bookingSchema = new Schema<
 bookingSchema.virtual('stayDuration').get(function () {
   const timestampDifference =
     this.departureDate.getTime() - this.arrivalDate.getTime();
-
   const millisecondsInADay = 24 * 60 * 60 * 1000;
-
   const differenceInDays = timestampDifference / millisecondsInADay;
-
   return differenceInDays;
 });
 

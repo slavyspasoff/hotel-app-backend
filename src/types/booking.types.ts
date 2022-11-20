@@ -29,5 +29,6 @@ export {
   type BookingInterface,
   type BookingModel,
   type BookingMethods,
+  type BookingQueryHelpers,
   type BookingVirtuals,
 };
