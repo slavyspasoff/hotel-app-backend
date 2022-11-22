@@ -7,6 +7,33 @@ import {
   type RoomQueryHelpers,
 } from '../types/room.types';
 
+const roomNumberValidator = {
+  validator: function (this: RoomDocument, v: number) {
+    const omitFirstNumber = Number(String(v).slice(1));
+    return omitFirstNumber <= 26 && omitFirstNumber !== 0;
+  },
+  message: 'Invalid room number, there are only 26 rooms per floor.',
+};
+
+const bedTypeValidators = [
+  {
+    validator: function (this: RoomDocument, v: RoomDocument['bedType']) {
+      if (this.type === 'loft-single' && v !== 'single') {
+        return false;
+      }
+    },
+    message: 'Room of type Loft single can only have a single bed.',
+  },
+  {
+    validator: function (this: RoomDocument, v: RoomDocument['bedType']) {
+      if (this.type === 'loft-double' && v !== 'double') {
+        return false;
+      }
+    },
+    message: 'Room of type Loft double can only have a double bed.',
+  },
+];
+
 const roomSchema = new Schema<
   RoomDocument,
   RoomModel,
@@ -23,26 +50,14 @@ const roomSchema = new Schema<
     type: Number,
     min: 101,
     max: 426,
-    validate: {
-      validator: function (this: RoomDocument, v: number) {
-        const omitFirstNumber = Number(String(v).slice(1));
-        return omitFirstNumber <= 26 || omitFirstNumber === 0;
-      },
-      message: 'Invalid room number, there are only 26 rooms per floor.',
-    },
+    unique: true,
+    validate: roomNumberValidator,
   },
   bedType: {
     type: String,
     enum: ['single', 'double', 'queen-size', 'king-size'],
     required: [true, 'Room must have a bed type.'],
-    validate: {
-      validator: function (this: RoomDocument, v: RoomDocument['bedType']) {
-        if (this.type === 'loft-single' && v !== 'single') {
-          return false;
-        }
-      },
-      message: 'Room of type "Loft single" can only have a single bed.',
-    },
+    validate: bedTypeValidators,
   },
   reviews: [
     {
@@ -59,3 +74,7 @@ const roomSchema = new Schema<
 });
 
 const Room = model('Room', roomSchema);
+
+//TODO: Attach the room document to the request and validate the bed type on find, since the `this` keyword points to the query
+
+export { Room as default };

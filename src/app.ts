@@ -6,6 +6,7 @@ const app = express();
 
 import bookingRouter from './routers/booking.router';
 import guestRouter from './routers/guest.router';
+import roomRouter from './routers/room.router';
 
 const { NODE_ENV } = env;
 
@@ -14,5 +15,6 @@ app.use(morgan('dev'));
 
 app.use('/api/bookings', bookingRouter);
 app.use('/api/guests', guestRouter);
+app.use('/api/rooms', roomRouter);
 
 export { app as default };
