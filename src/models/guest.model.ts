@@ -59,6 +59,6 @@ guestSchema.pre(/^find/, function (next) {
   next();
 });
 
-const Guest = model<GuestDocument, GuestMethods>('Guest', guestSchema);
+const Guest = model<GuestDocument, GuestModel>('Guest', guestSchema);
 
 export { Guest as default };

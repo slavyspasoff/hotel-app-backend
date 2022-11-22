@@ -74,9 +74,6 @@ bookingSchema.virtual('numberOfGuests').get(function () {
   return this.guests ? this.guests.length : undefined;
 });
 
-const Booking = model<BookingDocument, BookingMethods>(
-  'Booking',
-  bookingSchema
-);
+const Booking = model<BookingDocument, BookingModel>('Booking', bookingSchema);
 
 export { Booking as default };
