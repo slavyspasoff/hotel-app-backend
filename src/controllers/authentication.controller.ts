@@ -3,6 +3,7 @@ import { env } from 'process';
 import jwt, { type SignOptions } from 'jsonwebtoken';
 import { type Types } from 'mongoose';
 import { type Response, type CookieOptions } from 'express';
+import { compare } from 'bcrypt';
 
 import User from '../models/guest.model';
 import catchAsync from '../utility/catchAsync';
@@ -16,7 +17,7 @@ const signToken = (id: Types.ObjectId) => {
   return jwt.sign({ id }, JWT_SECRET as string, options);
 };
 
-const sendJWTCookie = (token: string, res: Response) => {
+const createJWTCookie = (token: string, res: Response) => {
   const millisecondsToDay = 24 * 60 * 60 * 1000;
   const inProduction = NODE_ENV === 'production';
 
@@ -33,7 +34,7 @@ const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);
 
-  sendJWTCookie(token, res);
+  createJWTCookie(token, res);
 
   res.status(201).json({
     status: 'success',
@@ -41,6 +42,21 @@ const signup = catchAsync(async (req, res, next) => {
   });
 });
 
-const login = catchAsync(async (req, res, next) => {});
+const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  //TODO: Add error handler for missing email or password
+  const foundGuest = await User.findOne({ email }).select('+password');
+  //TODO: Add error if not guest/user found
+  const correctCredentials = await compare(password, foundGuest!.password);
+  //TODO: Add error on incorrect credentials
+  const token = signToken(foundGuest!._id);
+  createJWTCookie(token, res);
+  res.status(200).json({
+    message: 'success',
+    data: {
+      data: foundGuest,
+    },
+  });
+});
 
 export { signup, login };
