@@ -4,17 +4,9 @@ import {
   type GuestDocument,
   type GuestModel,
   type GuestMethods,
-  type GuestQueryHelpers,
-  type GuestVirtuals,
 } from '../types/guest.types';
 
-const guestSchema = new Schema<
-  GuestDocument,
-  GuestModel,
-  GuestMethods,
-  GuestQueryHelpers,
-  GuestVirtuals
->(
+const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
   {
     name: {
       type: String,
@@ -67,6 +59,6 @@ guestSchema.pre(/^find/, function (next) {
   next();
 });
 
-const Guest = model('Guest', guestSchema);
+const Guest = model<GuestDocument, GuestMethods>('Guest', guestSchema);
 
 export { Guest as default };

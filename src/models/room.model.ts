@@ -3,8 +3,6 @@ import {
   type RoomDocument,
   type RoomModel,
   type RoomMethods,
-  type RoomVirtuals,
-  type RoomQueryHelpers,
 } from '../types/room.types';
 
 const roomNumberValidator = {
@@ -34,13 +32,7 @@ const bedTypeValidators = [
   },
 ];
 
-const roomSchema = new Schema<
-  RoomDocument,
-  RoomModel,
-  RoomMethods,
-  RoomQueryHelpers,
-  RoomVirtuals
->({
+const roomSchema = new Schema<RoomDocument, RoomModel, RoomMethods>({
   type: {
     type: String,
     enum: ['loft-single', 'loft-double', 'big-room', 'apartment'],
@@ -73,7 +65,7 @@ const roomSchema = new Schema<
   images: [String],
 });
 
-const Room = model('Room', roomSchema);
+const Room = model<RoomDocument, RoomModel>('Room', roomSchema);
 
 //TODO: Attach the room document to the request and validate the bed type on find, since the `this` keyword points to the query
 

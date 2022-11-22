@@ -4,17 +4,9 @@ import {
   type BookingDocument,
   type BookingModel,
   type BookingMethods,
-  type BookingQueryHelpers,
-  type BookingVirtuals,
 } from '../types/booking.types';
 
-const bookingSchema = new Schema<
-  BookingDocument,
-  BookingModel,
-  BookingMethods,
-  BookingQueryHelpers,
-  BookingVirtuals
->(
+const bookingSchema = new Schema<BookingDocument, BookingModel, BookingMethods>(
   {
     arrivalDate: {
       type: Date,
@@ -82,6 +74,9 @@ bookingSchema.virtual('numberOfGuests').get(function () {
   return this.guests ? this.guests.length : undefined;
 });
 
-const Booking = model('Booking', bookingSchema);
+const Booking = model<BookingDocument, BookingMethods>(
+  'Booking',
+  bookingSchema
+);
 
 export { Booking as default };

@@ -11,20 +11,5 @@ interface RoomDocument {
 }
 
 interface RoomMethods {}
-interface RoomQueryHelpers {}
-interface RoomVirtuals {}
-
-type RoomModel = Model<
-  RoomDocument,
-  RoomQueryHelpers,
-  RoomMethods,
-  RoomVirtuals
->;
-
-export {
-  type RoomDocument,
-  type RoomModel,
-  type RoomMethods,
-  type RoomVirtuals,
-  type RoomQueryHelpers,
-};
+type RoomModel = Model<RoomDocument, {}, RoomMethods>;
+export { type RoomDocument, type RoomModel, type RoomMethods };

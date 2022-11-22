@@ -10,21 +10,6 @@ interface GuestDocument {
 
 interface GuestMethods {}
 
-interface GuestQueryHelpers {}
+type GuestModel = Model<GuestDocument, {}, GuestMethods>;
 
-interface GuestVirtuals {}
-
-type GuestModel = Model<
-  GuestDocument,
-  GuestQueryHelpers,
-  GuestMethods,
-  GuestVirtuals
->;
-
-export {
-  type GuestDocument,
-  type GuestModel,
-  type GuestMethods,
-  type GuestQueryHelpers,
-  type GuestVirtuals,
-};
+export { type GuestDocument, type GuestModel, type GuestMethods };
