@@ -4,7 +4,7 @@ interface ReviewDocument {
   text: string;
   rating: number;
   room: Types.ObjectId;
-  user: Types.ObjectId;
+  guest: Types.ObjectId;
 }
 type ReviewMethods = {};
 
