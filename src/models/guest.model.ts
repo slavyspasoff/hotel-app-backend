@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { hash } from 'bcrypt';
 
 import {
   type GuestDocument,
@@ -36,7 +37,6 @@ const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
         },
         message: 'Password and confirmation password are not the same.',
       },
-      select: false,
     },
     bookings: [
       {
@@ -50,6 +50,15 @@ const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
     toObject: { virtuals: true },
   }
 );
+
+guestSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  this.password = await hash(this.password, 12);
+  this.confirmationPassword = undefined;
+  next();
+});
 
 guestSchema.pre(/^find/, function (next) {
   this.populate({

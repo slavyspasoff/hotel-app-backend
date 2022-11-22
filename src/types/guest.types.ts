@@ -4,7 +4,7 @@ interface GuestDocument {
   name: string;
   email: string;
   password: string;
-  confirmationPassword: string;
+  confirmationPassword?: string;
   bookings: Types.ObjectId[];
 }
 
