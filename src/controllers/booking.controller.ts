@@ -4,8 +4,8 @@ import {
   createHandler,
   updateHandler,
   deleteHandler,
-} from '../utility/controllerHandlers';
-import Booking from '../models/booking.model';
+} from '../utility/controllerHandlers.js';
+import Booking from '../models/booking.model.js';
 
 const getAllBookings = getAllHandler(Booking);
 const getBooking = getOneHandler(Booking);

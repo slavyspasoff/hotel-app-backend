@@ -4,7 +4,7 @@ import {
   type BookingDocument,
   type BookingModel,
   type BookingMethods,
-} from '../types/booking.types';
+} from '../types/booking.types.js';
 
 const bookingSchema = new Schema<BookingDocument, BookingModel, BookingMethods>(
   {

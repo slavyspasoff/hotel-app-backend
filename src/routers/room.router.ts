@@ -6,8 +6,8 @@ import {
   createRoom,
   updateRoom,
   deleteRoom,
-} from '../controllers/room.controller';
-import reviewRouter from '../routers/review.router';
+} from '../controllers/room.controller.js';
+import reviewRouter from '../routers/review.router.js';
 
 const router = Router();
 router.use('/:roomID/reviews', reviewRouter);

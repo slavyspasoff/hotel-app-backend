@@ -6,8 +6,8 @@ import {
   createGuest,
   updateGuest,
   deleteGuest,
-} from '../controllers/guest.controller';
-import reviewRouter from '../routers/review.router';
+} from '../controllers/guest.controller.js';
+import reviewRouter from '../routers/review.router.js';
 
 const router = Router();
 router.use('/:guestID/reviews', reviewRouter);

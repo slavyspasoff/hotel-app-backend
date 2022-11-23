@@ -1,11 +1,11 @@
-import Guest from '../models/guest.model';
+import Guest from '../models/guest.model.js';
 import {
   getAllHandler,
   getOneHandler,
   createHandler,
   updateHandler,
   deleteHandler,
-} from '../utility/controllerHandlers';
+} from '../utility/controllerHandlers.js';
 
 const getAllGuests = getAllHandler(Guest);
 const getGuest = getOneHandler(Guest);

@@ -5,7 +5,7 @@ import { env } from 'process';
 
 import mongoose from 'mongoose';
 
-import app from './app';
+import app from './app.js';
 
 const { PORT, NODE_ENV } = env;
 const port = PORT || 3030;

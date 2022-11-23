@@ -1,11 +1,11 @@
-import Room from '../models/room.model';
+import Room from '../models/room.model.js';
 import {
   getAllHandler,
   getOneHandler,
   createHandler,
   updateHandler,
   deleteHandler,
-} from '../utility/controllerHandlers';
+} from '../utility/controllerHandlers.js';
 
 const getAllRooms = getAllHandler(Room);
 const getRoom = getOneHandler(Room);

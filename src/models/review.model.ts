@@ -4,7 +4,7 @@ import {
   type ReviewDocument,
   type ReviewModel,
   type ReviewMethods,
-} from '../types/review.types';
+} from '../types/review.types.js';
 
 const reviewSchema = new Schema<ReviewDocument, ReviewModel, ReviewMethods>({
   text: {

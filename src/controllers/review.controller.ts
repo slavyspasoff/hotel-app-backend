@@ -1,12 +1,12 @@
 import {} from 'express';
 
-import catchAsync from '../utility/catchAsync';
-import Review from '../models/review.model';
+import catchAsync from '../utility/catchAsync.js';
+import Review from '../models/review.model.js';
 import {
   getOneHandler,
   updateHandler,
   deleteHandler,
-} from '../utility/controllerHandlers';
+} from '../utility/controllerHandlers.js';
 
 //TODO: Create review controllers once i'm finished with authorization.
 

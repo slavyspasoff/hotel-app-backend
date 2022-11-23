@@ -1,12 +1,12 @@
 import { env } from 'process';
 
-import jwt, { type SignOptions } from 'jsonwebtoken';
-import { type Types } from 'mongoose';
 import { type Response, type CookieOptions } from 'express';
+import { type Types } from 'mongoose';
 import { compare } from 'bcrypt';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 
-import User from '../models/guest.model';
-import catchAsync from '../utility/catchAsync';
+import User from '../models/guest.model.js';
+import catchAsync from '../utility/catchAsync.js';
 
 const { JWT_SECRET, JWT_TOKEN_EXPIRES_IN, COOKIE_EXPIRES_IN, NODE_ENV } = env;
 

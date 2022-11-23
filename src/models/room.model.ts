@@ -3,7 +3,7 @@ import {
   type RoomDocument,
   type RoomModel,
   type RoomMethods,
-} from '../types/room.types';
+} from '../types/room.types.js';
 
 const roomNumberValidator = {
   validator: function (this: RoomDocument, v: number) {

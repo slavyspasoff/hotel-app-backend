@@ -5,7 +5,7 @@ import {
   type GuestDocument,
   type GuestModel,
   type GuestMethods,
-} from '../types/guest.types';
+} from '../types/guest.types.js';
 
 const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
   {
