@@ -33,7 +33,8 @@ const createJWTCookie = (token: string, res: Response) => {
 };
 
 const signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
+  const { permission, ...newUserData } = req.body;
+  const newUser = await User.create(newUserData);
   const token = signToken(newUser._id);
 
   createJWTCookie(token, res);

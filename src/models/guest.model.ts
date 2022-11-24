@@ -41,6 +41,11 @@ const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
     passwordChangeDate: {
       type: Date,
     },
+    permission: {
+      type: String,
+      default: 'user',
+      enum: ['user', 'admin'],
+    },
     bookings: [
       {
         type: Schema.Types.ObjectId,
@@ -86,7 +91,8 @@ guestSchema.methods.verifyIsTokenExpired = function (
   if (!this.passwordChangeDate) {
     return false;
   }
-
+  console.log(new Date(timestamp * 1000));
+  console.log(this.passwordChangeDate);
   return timestamp * 1000 < this.passwordChangeDate.getTime();
 };
 

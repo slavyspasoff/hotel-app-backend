@@ -47,7 +47,7 @@ const asyncVerify = (t: string, s: string): JwtPayload =>
 // };
 
 //TODO: Add better error messages.
-const verifyJWT = catchAsync(async (req, res, next) => {
+export default catchAsync(async (req, res, next) => {
   const { jwt: token } = req.cookies;
 
   if (!token) {
@@ -78,5 +78,3 @@ const verifyJWT = catchAsync(async (req, res, next) => {
 
   next();
 });
-
-export { verifyJWT };

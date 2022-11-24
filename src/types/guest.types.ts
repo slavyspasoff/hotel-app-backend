@@ -7,6 +7,7 @@ interface GuestDocument {
   confirmationPassword?: string;
   passwordChangeDate?: Date;
   bookings: Types.ObjectId[];
+  permission: 'user' | 'admin';
 }
 
 interface GuestMethods {
