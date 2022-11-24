@@ -1,5 +1,5 @@
-import './utility/dotenvConfig.js';
 import { env } from 'process';
+import './utility/dotenvConfig.js';
 
 import mongoose from 'mongoose';
 

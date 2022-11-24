@@ -3,7 +3,7 @@ import { env } from 'process';
 import { type Response, type CookieOptions } from 'express';
 import { type Types } from 'mongoose';
 import { compare } from 'bcrypt';
-import jwt, { type SignOptions } from 'jsonwebtoken';
+import jsonwebtoken, { type SignOptions } from 'jsonwebtoken';
 
 import User from '../models/guest.model.js';
 import catchAsync from '../utility/catchAsync.js';
@@ -15,7 +15,8 @@ const signToken = (id: Types.ObjectId) => {
   const options: SignOptions = {
     expiresIn: JWT_TOKEN_EXPIRES_IN,
   };
-  return jwt.sign({ id }, JWT_SECRET as string, options);
+
+  return jsonwebtoken.sign({ id }, JWT_SECRET as string, options);
 };
 
 const createJWTCookie = (token: string, res: Response) => {
@@ -27,7 +28,6 @@ const createJWTCookie = (token: string, res: Response) => {
     httpOnly: true,
     secure: inProduction,
   };
-  ExpressAppError;
 
   res.cookie('jwt', token, options);
 };
@@ -40,24 +40,38 @@ const signup = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: 'success',
+    token,
     data: { data: newUser },
   });
 });
 
+//TODO: Add better error messages
 const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new ExpressAppError('Email and password required!', 403));
+    return next(new ExpressAppError('Email and password required.', 401));
   }
+
   const foundGuest = await User.findOne({ email }).select('+password');
-  //TODO: Add error if not guest/user found
+
+  if (!foundGuest) {
+    return next(new ExpressAppError('Invalid email or password.', 401));
+  }
+
   const correctCredentials = await compare(password, foundGuest!.password);
-  //TODO: Add error on incorrect credentials
+
+  if (!correctCredentials) {
+    return next(new ExpressAppError('Invalid email or password.', 401));
+  }
+
   const token = signToken(foundGuest!._id);
+
   createJWTCookie(token, res);
+
   res.status(200).json({
-    message: 'success',
+    status: 'success',
+    token,
     data: {
       data: foundGuest,
     },
