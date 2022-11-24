@@ -7,6 +7,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 
 import User from '../models/guest.model.js';
 import catchAsync from '../utility/catchAsync.js';
+import ExpressAppError from '../utility/ExpressAppError.js';
 
 const { JWT_SECRET, JWT_TOKEN_EXPIRES_IN, COOKIE_EXPIRES_IN, NODE_ENV } = env;
 
@@ -26,6 +27,7 @@ const createJWTCookie = (token: string, res: Response) => {
     httpOnly: true,
     secure: inProduction,
   };
+  ExpressAppError;
 
   res.cookie('jwt', token, options);
 };
@@ -44,7 +46,10 @@ const signup = catchAsync(async (req, res, next) => {
 
 const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  //TODO: Add error handler for missing email or password
+
+  if (!email || !password) {
+    return next(new ExpressAppError('Email and password required!', 403));
+  }
   const foundGuest = await User.findOne({ email }).select('+password');
   //TODO: Add error if not guest/user found
   const correctCredentials = await compare(password, foundGuest!.password);

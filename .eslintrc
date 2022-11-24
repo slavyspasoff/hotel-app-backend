@@ -16,5 +16,8 @@
     "project": "./tsconfig.json",
     "sourceType": "module",
     "ecmaVersion": 2022
+  },
+  "rules": {
+    "prettier/prettier": "off"
   }
 }

@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
+import './utility/dotenvConfig.js';
 import { env } from 'process';
 
 import mongoose from 'mongoose';
