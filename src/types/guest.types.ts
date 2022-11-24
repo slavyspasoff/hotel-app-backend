@@ -5,10 +5,13 @@ interface GuestDocument {
   email: string;
   password: string;
   confirmationPassword?: string;
+  passwordChangeDate?: Date;
   bookings: Types.ObjectId[];
 }
 
-interface GuestMethods {}
+interface GuestMethods {
+  verifyIsTokenExpired: (v: number) => boolean;
+}
 
 type GuestModel = Model<GuestDocument, {}, GuestMethods>;
 

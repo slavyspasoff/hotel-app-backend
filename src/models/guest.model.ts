@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 
 import {
   type GuestDocument,
@@ -38,6 +38,9 @@ const guestSchema = new Schema<GuestDocument, GuestModel, GuestMethods>(
         message: 'Password and confirmation password are not the same.',
       },
     },
+    passwordChangeDate: {
+      type: Date,
+    },
     bookings: [
       {
         type: Schema.Types.ObjectId,
@@ -60,6 +63,14 @@ guestSchema.pre('save', async function (next) {
   next();
 });
 
+guestSchema.pre('save', function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  this.passwordChangeDate = new Date(Date.now() - 2000);
+  next();
+});
+
 guestSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'bookings',
@@ -67,6 +78,24 @@ guestSchema.pre(/^find/, function (next) {
   });
   next();
 });
+
+guestSchema.methods.verifyIsTokenExpired = function (
+  this: GuestDocument,
+  timestamp: number
+) {
+  if (!this.passwordChangeDate) {
+    return false;
+  }
+
+  return timestamp * 1000 < this.passwordChangeDate.getTime();
+};
+
+guestSchema.methods.verifyPassword = async function (
+  this: GuestDocument,
+  candidatePassword: string
+) {
+  return await compare(candidatePassword, this.password);
+};
 
 const Guest = model<GuestDocument, GuestModel>('Guest', guestSchema);
 

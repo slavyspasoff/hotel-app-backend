@@ -65,7 +65,15 @@ const verifyJWT = catchAsync(async (req, res, next) => {
       new ExpressAppError('No user associated with this token.', 401)
     );
   }
-  //TODO: Add check if user has changed his password after the "iat"(token issued at)
+  const tokenHasExpired = foundUser.verifyIsTokenExpired(iat);
+  if (tokenHasExpired) {
+    return next(
+      new ExpressAppError(
+        'User recently changed password! Please log in again.',
+        401
+      )
+    );
+  }
   req.user = foundUser;
 
   next();
