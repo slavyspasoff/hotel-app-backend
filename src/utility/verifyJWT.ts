@@ -47,14 +47,14 @@ const asyncVerify = (t: string, s: string): JwtPayload =>
 // };
 
 //TODO: Add better error messages.
-const authorize = catchAsync(async (req, res, next) => {
+const verifyJWT = catchAsync(async (req, res, next) => {
   const { jwt: token } = req.cookies;
 
   if (!token) {
     return next(new ExpressAppError('Login required.', 401));
   }
   //TODO: Add invalid token custom error handler
-  const { id, iat, exp } = await asyncVerify(token, JWT_SECRET as string);
+  const { id, iat } = await asyncVerify(token, JWT_SECRET as string);
 
   if (!id || !iat) {
     return next(new ExpressAppError('Invalid credentials.', 401));
@@ -71,4 +71,4 @@ const authorize = catchAsync(async (req, res, next) => {
   next();
 });
 
-export { authorize };
+export { verifyJWT };
