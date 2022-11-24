@@ -1,7 +1,7 @@
 import { Response, type Request } from 'express';
 import { type Model } from 'mongoose';
 
-import catchAsync from './catchAsync';
+import catchAsync from './catchAsync.js';
 
 const getAllHandler = <T, U, K>(model: Model<T, U, K>) =>
   catchAsync(async (req, res, next) => {

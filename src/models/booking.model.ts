@@ -1,30 +1,45 @@
 import { Schema, model } from 'mongoose';
 
 import {
-  type BookingInterface,
+  type BookingDocument,
   type BookingModel,
   type BookingMethods,
-  type BookingQueryHelpers,
-  type BookingVirtuals,
-} from '../types/booking.types';
+} from '../types/booking.types.js';
 
-const bookingSchema = new Schema<
-  BookingInterface,
-  BookingModel,
-  BookingMethods,
-  BookingQueryHelpers,
-  BookingVirtuals
->(
+const bookingSchema = new Schema<BookingDocument, BookingModel, BookingMethods>(
   {
-    arrivalDate: Date,
-    departureDate: Date,
-    maxGuests: Number,
-    isBreakfastIncl: Boolean,
+    arrivalDate: {
+      type: Date,
+      required: [true, 'Booking must have an arrival date.'],
+      validate: {
+        validator: function (this: BookingDocument, v: Date) {
+          v.getTime() > Date.now();
+        },
+        message:
+          'Booking must have an arrival date equal or greater than the current date.',
+      },
+    },
+    departureDate: {
+      type: Date,
+      required: [true, 'Booking must have an departure date.'],
+
+      validate: {
+        validator: function (this: BookingDocument, v: Date) {
+          v.getTime() > this.arrivalDate.getTime();
+        },
+        message:
+          'Booking must have an departure date equal or greater than the arrival date. ',
+      },
+    },
+    isBreakfastIncl: {
+      type: Boolean,
+      default: false,
+    },
     guests: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Guest',
-        // required: [true, 'Guest is required!'],
+        required: [true, 'Booking must have one or more guests.'],
       },
     ],
     roomNumber: {
@@ -39,6 +54,14 @@ const bookingSchema = new Schema<
   }
 );
 
+bookingSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guests',
+    select: '-__v -bookings',
+  });
+  next();
+});
+
 bookingSchema.virtual('stayDuration').get(function () {
   const timestampDifference =
     this.departureDate.getTime() - this.arrivalDate.getTime();
@@ -47,6 +70,10 @@ bookingSchema.virtual('stayDuration').get(function () {
   return Math.ceil(differenceInDays);
 });
 
-const Booking = model('Booking', bookingSchema);
+bookingSchema.virtual('numberOfGuests').get(function () {
+  return this.guests ? this.guests.length : undefined;
+});
+
+const Booking = model<BookingDocument, BookingModel>('Booking', bookingSchema);
 
 export { Booking as default };
